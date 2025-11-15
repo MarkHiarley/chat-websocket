@@ -1,0 +1,26 @@
+services:
+  chat-websocket-backend:
+    container_name: chat-websocket-backend
+    build: ./backend/.
+    ports:
+      - "19090:9090"
+    networks:
+      - obras_network
+    restart: unless-stopped
+
+  chat-websocket-frontend:
+    container_name: chat-websocket-frontend
+    build: ./frontend/.
+    ports:
+      - "19000:3000"
+    environment:
+      - NEXT_PUBLIC_WS_URL=ws://localhost:19090/ws
+    depends_on:
+      - chat-websocket-backend
+    networks:
+      - obras_network
+    restart: unless-stopped
+
+networks:
+  obras_network:
+    driver: bridge
