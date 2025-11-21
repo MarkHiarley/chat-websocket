@@ -31,7 +31,7 @@ export default function Home() {
   }, [messages]);
 
   useEffect(() => {
-    const websocket = new WebSocket('ws://92.113.34.172:19090/ws');
+    const websocket = new WebSocket('http://localhost:19090/ws');
 
     websocket.onopen = () => {
       console.log('Conectado ao chat!');
@@ -55,7 +55,6 @@ export default function Home() {
       setIsConnected(false);
     };
 
-    // store the socket in a ref to avoid calling setState synchronously inside the effect
     wsRef.current = websocket;
 
     return () => {

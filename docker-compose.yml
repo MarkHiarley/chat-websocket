@@ -5,7 +5,7 @@ services:
     ports:
       - "19090:9090"
     networks:
-      - obras_network
+      - chatwebsocket_network
     restart: unless-stopped
 
   chat-websocket-frontend:
@@ -18,9 +18,30 @@ services:
     depends_on:
       - chat-websocket-backend
     networks:
-      - obras_network
+      - chatwebsocket_network
     restart: unless-stopped
+  
+
+  db_chat:
+    image: postgres:12 
+    container_name: db-chatwebsocket
+    restart: always
+    environment:
+      POSTGRES_DB: chatdb
+      POSTGRES_USER: chathadmin
+      POSTGRES_PASSWORD: 1239012
+    ports:
+      - "15432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - chatwebsocket_network
+
+volumes:
+  pgdata:
+
+
 
 networks:
-  obras_network:
+  chatwebsocket_network:
     driver: bridge
