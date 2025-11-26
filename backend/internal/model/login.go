@@ -5,6 +5,6 @@ import (
 )
 
 type LoginUser struct {
-	Email null.String `json:"email,omitempty"`
-	Senha null.String `json:"senha,omitempty"`
+	Email    null.String `json:"email,omitempty" binding:"required"`
+	Password null.String `json:"password,omitempty" binding:"required"`
 }

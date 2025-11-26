@@ -1,6 +1,6 @@
 CREATE TABLE users (
 
-  id integer unique,
+  id integer unique PRIMARY KEY GENERATED ALWAYS AS IDENTITY, 
   username    varchar(40),
   email   varchar(40),
   password varchar(900)
