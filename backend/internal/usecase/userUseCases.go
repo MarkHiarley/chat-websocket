@@ -1,0 +1,32 @@
+package usecase
+
+import (
+	"github.com/markHiarley/projetinho/internal/model"
+	"github.com/markHiarley/projetinho/internal/services"
+	"golang.org/x/crypto/bcrypt"
+)
+
+var JWT_SECRET_TOKEN []byte
+
+type UserUseCase struct {
+	UserService services.UserService
+}
+
+func NewUserUseCase(service services.UserService) UserUseCase {
+	return UserUseCase{
+		UserService: service,
+	}
+}
+
+func (uc UserUseCase) CreateUser(user model.User) error {
+	senhaHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return err
+	}
+
+	senhaHashToString := string(senhaHash)
+
+	return uc.UserService.CreateUser(user, senhaHashToString)
+
+}
