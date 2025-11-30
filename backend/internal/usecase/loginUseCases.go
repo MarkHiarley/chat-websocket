@@ -23,7 +23,7 @@ func (au *LoginUseCase) AuthenticateUser(body model.LoginUser) (accessToken,
 
 	senhaLogin := body.Password.String
 
-	senhaHash, err := au.services.AuthenticateUser(email)
+	senhaHash, role, err := au.services.AuthenticateUser(email)
 
 	if err != nil {
 		return "", "", err
@@ -35,11 +35,11 @@ func (au *LoginUseCase) AuthenticateUser(body model.LoginUser) (accessToken,
 		return "", "", comparado
 	}
 
-	accessToken1, err := auth.GenerateAccessToken(email)
+	accessToken1, err := auth.GenerateAccessToken(email, role)
 	if err != nil {
 		return "", "", err
 	}
-	refreshToken1, err := auth.GenerateRefreshToken(email)
+	refreshToken1, err := auth.GenerateRefreshToken(email, role)
 	if err != nil {
 		return "", "", err
 	}

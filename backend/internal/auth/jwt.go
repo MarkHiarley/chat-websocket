@@ -21,9 +21,10 @@ func init() {
 	JWT_SECRET_TOKEN = []byte(os.Getenv("JWT_SECRET_TOKEN"))
 }
 
-func GenerateAccessToken(email string) (string, error) {
+func GenerateAccessToken(email, role string) (string, error) {
 	claims := model.JWTClaims{
 		Email: email,
+		Role:  role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -44,9 +45,10 @@ func GenerateAccessToken(email string) (string, error) {
 
 }
 
-func GenerateRefreshToken(email string) (string, error) {
+func GenerateRefreshToken(email, role string) (string, error) {
 	claims := model.JWTClaims{
 		Email: email,
+		Role:  role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),

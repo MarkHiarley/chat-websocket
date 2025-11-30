@@ -1,4 +1,3 @@
--- Remove índices
 DROP INDEX IF EXISTS idx_users_email;
 DROP INDEX IF EXISTS idx_users_username;
 
@@ -11,7 +10,11 @@ DROP CONSTRAINT IF EXISTS users_username_unique;
 
 
 ALTER TABLE users 
-ALTER COLUMN id DROP DEFAULT;
+ADD CONSTRAINT users_email_unique UNIQUE (email);
 
--- Remove a sequência
-DROP SEQUENCE IF EXISTS users_id_seq CASCADE;
+ALTER TABLE users 
+ADD CONSTRAINT users_username_unique UNIQUE (username);
+
+
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);

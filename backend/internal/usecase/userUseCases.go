@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/markHiarley/projetinho/internal/model"
 	"github.com/markHiarley/projetinho/internal/services"
 	"golang.org/x/crypto/bcrypt"
@@ -27,6 +29,11 @@ func (uc UserUseCase) CreateUser(user model.User) error {
 
 	senhaHashToString := string(senhaHash)
 
-	return uc.UserService.CreateUser(user, senhaHashToString)
+	err = uc.UserService.CreateUser(user, senhaHashToString)
 
+	if err != nil {
+		return fmt.Errorf("email ja cadastrado, tente usar outro email: %w", err)
+	}
+
+	return nil
 }

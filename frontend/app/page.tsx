@@ -31,7 +31,7 @@ export default function Home() {
   }, [messages]);
 
   useEffect(() => {
-    const websocket = new WebSocket('http://92.113.34.172:19090/ws');
+    const websocket = new WebSocket('http://localhost:19090/ws');
 
     websocket.onopen = () => {
       console.log('Conectado ao chat!');

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/markHiarley/projetinho/internal/controller"
+	"github.com/markHiarley/projetinho/internal/middleware"
 	"github.com/markHiarley/projetinho/internal/services"
 	"github.com/markHiarley/projetinho/internal/usecase"
 	"github.com/markHiarley/projetinho/pkg/postgres"
@@ -37,19 +38,23 @@ func main() {
 
 	}
 
-	ws := router.Group("/ws")
+	protectedChat := router.Group("/chatonline/ws")
+	protectedChat.Use(middleware.ValidateTokenJwt())
 	{
-		handleConnections := services.HandleConnections
-		handleMessages := services.HandleMessages
 
-		ws.GET("", func(c *gin.Context) {
-			handleConnections(c.Writer, c.Request)
-		})
-		go handleMessages()
+		{
+			handleConnections := services.HandleConnections
+			handleMessages := services.HandleMessages
+
+			protectedChat.GET("", func(c *gin.Context) {
+				handleConnections(c.Writer, c.Request)
+			})
+			go handleMessages()
+		}
 	}
 
-	log.Printf("🚀 Server starting on :9090")
-	if err := router.Run(":9090"); err != nil {
-		log.Fatalf("❌ Server failed: %v", err)
+	log.Printf(" Server starting on :19090")
+	if err := router.Run(":19090"); err != nil {
+		log.Fatalf(" Server failed (deu ruim): %v", err)
 	}
 }
