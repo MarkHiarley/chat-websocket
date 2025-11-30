@@ -37,3 +37,13 @@ func (uc UserUseCase) CreateUser(user model.User) error {
 
 	return nil
 }
+func (uc UserUseCase) DeleteUser(id string) error {
+
+	err := uc.UserService.DeleteUser(id)
+
+	if err != nil {
+		return fmt.Errorf("erro ao deletar usuario: %w", err)
+	}
+
+	return nil
+}

@@ -38,19 +38,23 @@ func main() {
 
 	}
 
+	adminRoutes := router.Group("/api")
+	adminRoutes.Use(middleware.ValidateTokenJwt(), middleware.AdminMiddleware())
+	{
+		adminRoutes.DELETE("/users/:id", userController.DeleteUser)
+	}
+
 	protectedChat := router.Group("/chatonline/ws")
 	protectedChat.Use(middleware.ValidateTokenJwt())
+
 	{
+		handleConnections := services.HandleConnections
+		handleMessages := services.HandleMessages
 
-		{
-			handleConnections := services.HandleConnections
-			handleMessages := services.HandleMessages
-
-			protectedChat.GET("", func(c *gin.Context) {
-				handleConnections(c.Writer, c.Request)
-			})
-			go handleMessages()
-		}
+		protectedChat.GET("", func(c *gin.Context) {
+			handleConnections(c.Writer, c.Request)
+		})
+		go handleMessages()
 	}
 
 	log.Printf(" Server starting on :19090")

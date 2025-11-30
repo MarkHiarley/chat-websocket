@@ -44,3 +44,27 @@ func (uc UserController) CreateUser(ctx *gin.Context) {
 	})
 
 }
+func (uc UserController) DeleteUser(ctx *gin.Context) {
+	id := ctx.Param("id")
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "ID é obrigatório",
+		})
+		return
+	}
+
+	err := uc.LoginController.DeleteUser(id)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "usuario deletado com sucesso",
+	})
+
+}
